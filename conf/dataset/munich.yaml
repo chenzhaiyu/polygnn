@@ -1,0 +1,6 @@
+# @package _global_
+
+# dataset settings
+dataset: 'munich'
+num_queries: 16
+dataset_suffix: ''

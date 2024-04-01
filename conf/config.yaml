@@ -1,0 +1,101 @@
+# Default configuration for the Project.
+# Values shall be overriden by respective dataset configurations.
+
+# default settings
+defaults:
+  - _self_
+  - dataset: munich
+  - override hydra/job_logging: custom
+  - override hydra/hydra_logging: colorlog
+
+# general path settings
+run_suffix: ''
+data_dir: './data/${dataset}${dataset_suffix}'
+complex_dir: '${data_dir}/raw/05_complexes'
+reference_dir: '${data_dir}/raw/03_meshes_global_test'
+output_dir: './outputs/${dataset}${run_suffix}'
+remap_dir: '${output_dir}/global'
+checkpoint_dir: './checkpoints/${dataset}${run_suffix}'
+checkpoint_path: '${checkpoint_dir}/model_best.pth'
+csv_path: '${output_dir}/evaluation.csv'
+
+# network settings
+encoder: ConvONet                 # {PointNet, PointNet2, PointCNN, DGCNN, PointTransformerConv, RandLANet, ConvONet}
+decoder: ConvONet                 # {MLP, ConvONet}
+gnn: TAGCN                        # {null, GCN, TransformerGCN, TAGCN}
+latent_dim_light: 256             # latent dimension (256) for plain encoder-decoder
+latent_dim_conv: 4096             # latent dimension (4096) for convolutional encoder-decoder
+use_spatial_transformer: false
+convonet_kwargs:
+  unet: True
+  unet_kwargs:
+    depth: 4
+    merge_mode: 'concat'
+    start_filts: 32
+  plane_resolution: 128
+  plane_type: ['xz', 'xy', 'yz']
+
+# training settings
+warm: false                       # warm start from checkpoint
+warm_optimizer: true              # load optimizer from checkpoint if available
+warm_scheduler: true              # load scheduler from checkpoint if available
+freeze_stages: []                 # [encoder, decoder, gnn]
+gpu_ids: [5, 6, 7, 8]
+gpu_freeze: false
+weight_decay: 1e-6
+num_epochs: 50
+save_interval: 1
+dropout: false
+validate: true
+seed: 1117
+batch_size: 64
+num_workers: 32
+loss: bce                         # {bce, focal}
+lr: 1e-3
+scheduler:
+  base_lr: 1e-4
+  max_lr: ${lr}
+  step_size_up: 4400
+  mode: triangular2
+
+# ddp settings
+master_addr: localhost
+master_port: 12345
+
+# dataset settings (shall be overwritten)
+shuffle: true
+class_weights: [1., 1.]
+sample:
+  strategy: random                     # {null, fps, random, grid}
+  transform: true                      # on-the-fly sampling (may introduce randomness)
+  pre_transform: false                 # sampling as pre-transform
+  duplicate: true                      # effective only for random sampling
+  length: 4096                         # effective only for random sampling
+  resolutions: [0.05, 0.01, 0.005]     # effective only for grid sampling and progressive training
+  resolution: 0.01                     # one of the previous
+  ratio: 0.3                           # effective only for fps sampling
+
+# evaluation settings
+evaluate:
+  score: true                       # compute accuracy score in evaluation
+  save: false                       # save prediction as numpy file
+  seal: true                        # seal non-watertight model with bounding volume
+  num_samples: 10000
+
+# reconstruction settings
+reconstruct:
+  type: mesh                        # {cell, mesh}
+  scale: true
+  seal: false                       # seal with bounding volume
+  translate: true
+  offset: [0, 0, 0]                 # [-653200, -5478800, 0]
+
+# hydra settings
+hydra:
+  run:
+    dir: ./outputs
+  verbose: false
+
+# wandb settings
+wandb: true
+wandb_dir: './outputs'

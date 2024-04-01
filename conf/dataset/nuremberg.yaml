@@ -1,0 +1,9 @@
+# @package _global_
+
+# dataset settings
+dataset: 'nuremberg'
+num_queries: 16
+dataset_suffix: ''
+reference_dir: '${data_dir}/raw/03_meshes_global'
+reconstruct:
+     offset: [-653200, -5478800, 0]
