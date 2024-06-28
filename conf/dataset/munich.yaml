@@ -4,3 +4,5 @@
 dataset: 'munich'
 num_queries: 16
 dataset_suffix: ''
+url_dataset: {'default': null}
+url_checkpoint: {'default': 'https://drive.usercontent.google.com/download?id=1IivVlSGmTUBa8TDnmDKV24VaoWZBGT1M&export=download&authuser=0&confirm=t'}

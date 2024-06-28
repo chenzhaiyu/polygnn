@@ -6,6 +6,10 @@
 > [!NOTE]  
 > This repository is undergoing revisions and may differ from the state of the arXiv manuscript.
 
+<p align="center">
+<img src="https://raw.githubusercontent.com/chenzhaiyu/polygnn/master/docs/architecture.jpg" width="680"/>
+</p>
+
 ## Dependencies
 
 ### All-in-one installation
@@ -38,6 +42,11 @@ pip install abspy hydra-core hydra-colorlog omegaconf trimesh tqdm wandb plyfile
 
 ## Usage
 
+Download data and weights:
+```python
+python download.py dataset=munich
+```
+
 Train PolyGNN:
 ```python
 python train.py dataset=munich
@@ -65,9 +74,9 @@ python stats.py dataset=munich
 
 ## TODOs
 
+- [ ] Host data and weights
+- [ ] Short tutorial on getting started
 - [ ] Scripts for data generation and manipulation
-- [ ] Short tutorial on how to get started
-- [ ] Host generated data
 
 ## License
 
