@@ -1,91 +1,121 @@
 # PolyGNN
 
 -----------
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://raw.githubusercontent.com/chenzhaiyu/polygnn/main/LICENSE)
 
-***PolyGNN*** is an implementation of the paper [*PolyGNN: Polyhedron-based Graph Neural Network for 3D Building Reconstruction from Point Clouds*](https://arxiv.org/abs/2307.08636). 
+PolyGNN is the implementation of the paper [*PolyGNN: Polyhedron-based Graph Neural Network for 3D Building Reconstruction from Point Clouds*](https://arxiv.org/abs/2307.08636). 
 > [!NOTE]  
-> This repository is undergoing revisions and may differ from the state of the arXiv manuscript.
+> This repository is under development and may differ from the arXiv manuscript.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/chenzhaiyu/polygnn/master/docs/architecture.jpg" width="680"/>
+<img src="https://raw.githubusercontent.com/chenzhaiyu/polygnn/master/docs/architecture.png" width="680"/>
 </p>
 
-## Dependencies
+## 🛠️ Setup
 
-### All-in-one installation
+### Repository
 
-Create a conda environment with all dependencies installed:
+Clone the repository:
 
 ```bash
 git clone https://github.com/chenzhaiyu/polygnn && cd polygnn
+```
+
+### All-in-one installation
+
+Create a conda environment with all dependencies:
+
+```bash
 conda env create -f environment.yml && conda activate polygnn
 ```
 
 ### Manual installation
 
-Create a conda environment and enter it:
+Alternatively, manual installation is straightforward.
+
+Create a conda environment with [mamba](https://github.com/mamba-org/mamba) for faster parsing:
 
 ```bash
 conda create --name polygnn python=3.10 && conda activate polygnn
-```
-
-Install [mamba](https://github.com/mamba-org/mamba) for faster package parsing and installation:
-```bash
 conda install mamba -c conda-forge
 ```
 
-Install the main dependencies:
+Install the required dependencies:
+
 ```
 mamba install pytorch torchvision sage=10.0 pytorch-cuda=11.7 pyg=2.3 pytorch-scatter pytorch-sparse pytorch-cluster torchmetrics rtree -c pyg -c pytorch -c nvidia -c conda-forge
 pip install abspy hydra-core hydra-colorlog omegaconf trimesh tqdm wandb plyfile
 ```
 
-## Usage
+## 🚀 Usage
 
-Download data and weights:
+### Quick start
+
+Download the mini data and pretrained weights:
+
 ```python
-python download.py dataset=munich
+python download.py dataset=mini
+```
+In case you encounter issues (e.g., Google Drive download limits), you can manually download the data and weights [here](https://drive.google.com/drive/folders/1fAwvhGtOgS8f4IldE1J4v5s0438WM24b?usp=sharing), then extract them into `./checkpoints/mini` and `./data/mini`, respectively.
+The mini data contains 200 random instances (~0.07% of the full dataset).
+
+Train PolyGNN on the mini dataset:
+
+```python
+python train.py dataset=mini
+```
+The first time you launch training, the data will be automatically preprocessed.
+
+Evaluate PolyGNN's performance:
+
+```python
+python test.py dataset=mini evaluate.save=true
 ```
 
-Train PolyGNN:
+Generate meshes from graph predictions:
+
 ```python
-python train.py dataset=munich
+python reconstruct.py dataset=mini reconstruct.type=mesh
 ```
 
-Evaluate PolyGNN:
+Remap meshes to their original CRS:
+
 ```python
-python test.py dataset=munich evaluate.save=true
+python remap.py dataset=mini
 ```
 
-Reconstruct meshes from predictions:
+Derive reconstruction performance statistics:
+
 ```python
-python reconstruct.py dataset=munich reconstruct.type=mesh
+python stats.py dataset=mini
 ```
 
-Remap meshes to original CRS:
+Check available configurations:
 ```python
-python remap.py dataset=munich
+# training
+python train.py --cfg job
+
+# evaluation
+python test.py --cfg job
 ```
-
-Generate statistics:
-```python
-python stats.py dataset=munich
-```
-
-## TODOs
-
-- [ ] Host data and weights
-- [ ] Short tutorial on getting started
-- [ ] Scripts for data generation and manipulation
-
-## License
-
-[MIT](https://raw.githubusercontent.com/chenzhaiyu/polygnn/main/LICENSE)
+Alternatively, review the configuration file: `conf/config.yaml`.
 
 
-## Citation
+### Custom data
 
-If you use *PolyGNN* in a scientific work, please consider citing the paper:
+PolyGNN requires polyhedron-based graphs as input. To prepare this from your own point clouds:
+1. Extract planar primitives using tools such as [Easy3D](https://github.com/LiangliangNan/Easy3D) or [GoCoPP](https://github.com/Ylannl/GoCoPP), preferably in [VertexGroup](https://abspy.readthedocs.io/en/latest/vertexgroup.html) format.
+2. To train, instantiate your dataset with the [`CityDataset`](https://github.com/chenzhaiyu/polygnn/blob/67addd77a6be1d100448e3bd7523babfa063d0dd/dataset.py#L157) class, or use the [`TestOnlyDataset`](https://github.com/chenzhaiyu/polygnn/blob/67addd77a6be1d100448e3bd7523babfa063d0dd/dataset.py#L276) class for testing-only purposes.
+
+## 👷 TODOs
+
+- [x] Demo with mini data and pretrained weights
+- [x] Short tutorial for getting started
+- [ ] Host the entire dataset
+
+## 🎓 Citation
+
+If you use PolyGNN in a scientific work, please consider citing the paper:
 
 ```bibtex
 @article{chen2023polygnn,

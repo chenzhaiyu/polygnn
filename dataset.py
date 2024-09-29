@@ -300,5 +300,5 @@ class TestOnlyDataset(CityDataset):
         with multiprocessing.Pool(
                 processes=self.num_workers if self.num_workers else multiprocessing.cpu_count()) as pool:
             # call with multiprocessing
-            for _ in tqdm(pool.map(self.thread, args), desc='Preparing dataset', total=len(args)):
+            for _ in tqdm(pool.imap(self.thread, args), desc='Preparing dataset', total=len(args)):
                 pass
