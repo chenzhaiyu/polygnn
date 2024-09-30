@@ -3,7 +3,7 @@
 -----------
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://raw.githubusercontent.com/chenzhaiyu/polygnn/main/LICENSE)
 
-PolyGNN is the implementation of the paper [*PolyGNN: Polyhedron-based Graph Neural Network for 3D Building Reconstruction from Point Clouds*](https://arxiv.org/abs/2307.08636). 
+PolyGNN is an implementation of the paper [*PolyGNN: Polyhedron-based Graph Neural Network for 3D Building Reconstruction from Point Clouds*](https://arxiv.org/abs/2307.08636). 
 > [!NOTE]  
 > This repository is under development and may differ from the arXiv manuscript.
 
@@ -31,17 +31,13 @@ conda env create -f environment.yml && conda activate polygnn
 
 ### Manual installation
 
-Alternatively, manual installation is straightforward.
-
-Create a conda environment with [mamba](https://github.com/mamba-org/mamba) for faster parsing:
-
+Still easy! Create a conda environment and install [mamba](https://github.com/mamba-org/mamba) for faster parsing:
 ```bash
 conda create --name polygnn python=3.10 && conda activate polygnn
 conda install mamba -c conda-forge
 ```
 
 Install the required dependencies:
-
 ```
 mamba install pytorch torchvision sage=10.0 pytorch-cuda=11.7 pyg=2.3 pytorch-scatter pytorch-sparse pytorch-cluster torchmetrics rtree -c pyg -c pytorch -c nvidia -c conda-forge
 pip install abspy hydra-core hydra-colorlog omegaconf trimesh tqdm wandb plyfile
@@ -51,51 +47,47 @@ pip install abspy hydra-core hydra-colorlog omegaconf trimesh tqdm wandb plyfile
 
 ### Quick start
 
-Download the mini data and pretrained weights:
+Download the mini dataset and pretrained weights:
 
 ```python
 python download.py dataset=mini
 ```
-In case you encounter issues (e.g., Google Drive download limits), you can manually download the data and weights [here](https://drive.google.com/drive/folders/1fAwvhGtOgS8f4IldE1J4v5s0438WM24b?usp=sharing), then extract them into `./checkpoints/mini` and `./data/mini`, respectively.
-The mini data contains 200 random instances (~0.07% of the full dataset).
+In case you encounter issues (e.g., Google Drive limits), manually download the data and weights [here](https://drive.google.com/drive/folders/1fAwvhGtOgS8f4IldE1J4v5s0438WM24b?usp=sharing), then extract them into `./checkpoints/mini` and `./data/mini`, respectively.
+The mini dataset contains 200 random instances (~0.07% of the full dataset).
 
 Train PolyGNN on the mini dataset:
-
 ```python
 python train.py dataset=mini
 ```
-The first time you launch training, the data will be automatically preprocessed.
+The data will be automatically preprocessed the first time you initiate training.
 
-Evaluate PolyGNN's performance:
-
+Evaluate PolyGNN with option to save predictions:
 ```python
 python test.py dataset=mini evaluate.save=true
 ```
 
-Generate meshes from graph predictions:
-
+Generate meshes from predictions:
 ```python
 python reconstruct.py dataset=mini reconstruct.type=mesh
 ```
 
 Remap meshes to their original CRS:
-
 ```python
 python remap.py dataset=mini
 ```
 
-Derive reconstruction performance statistics:
-
+Generate reconstruction statistics:
 ```python
 python stats.py dataset=mini
 ```
 
-Check available configurations:
+### Available configurations
+
 ```python
-# training
+# check available configurations for training
 python train.py --cfg job
 
-# evaluation
+# check available configurations for evaluation
 python test.py --cfg job
 ```
 Alternatively, review the configuration file: `conf/config.yaml`.
@@ -105,7 +97,45 @@ Alternatively, review the configuration file: `conf/config.yaml`.
 
 PolyGNN requires polyhedron-based graphs as input. To prepare this from your own point clouds:
 1. Extract planar primitives using tools such as [Easy3D](https://github.com/LiangliangNan/Easy3D) or [GoCoPP](https://github.com/Ylannl/GoCoPP), preferably in [VertexGroup](https://abspy.readthedocs.io/en/latest/vertexgroup.html) format.
-2. To train, instantiate your dataset with the [`CityDataset`](https://github.com/chenzhaiyu/polygnn/blob/67addd77a6be1d100448e3bd7523babfa063d0dd/dataset.py#L157) class, or use the [`TestOnlyDataset`](https://github.com/chenzhaiyu/polygnn/blob/67addd77a6be1d100448e3bd7523babfa063d0dd/dataset.py#L276) class for testing-only purposes.
+2. Build [CellComplex](https://abspy.readthedocs.io/en/latest/api.html#abspy.CellComplex) from the primitives using [abspy](https://github.com/chenzhaiyu/abspy). Example code:
+   ```python
+   from abspy import VertexGroup, CellComplex
+   vertex_group = VertexGroup(vertex_group_path, quiet=True)
+   cell_complex = CellComplex(vertex_group.planes, vertex_group.aabbs,
+                              vertex_group.points_grouped, build_graph=True, quiet=True)
+   cell_complex.prioritise_planes(prioritise_verticals=True)
+   cell_complex.construct()
+   cell_complex.save(complex_path)
+   ```
+   Alternatively, you can modify [`CityDataset`](https://github.com/chenzhaiyu/polygnn/blob/67addd77a6be1d100448e3bd7523babfa063d0dd/dataset.py#L157) or [`TestOnlyDataset`](https://github.com/chenzhaiyu/polygnn/blob/67addd77a6be1d100448e3bd7523babfa063d0dd/dataset.py#L276) to accept inputs directly from [VertexGroup](https://abspy.readthedocs.io/en/latest/vertexgroup.html) or [reference mesh](https://abspy.readthedocs.io/en/latest/api.html#abspy.VertexGroupReference).
+3. Structure your dataset similarly to the provided mini dataset:
+   ```bash
+   YOUR_DATASET_NAME
+   └── raw
+       ├── 03_meshes
+       │   ├── DEBY_LOD2_104572462.obj
+       │   ├── DEBY_LOD2_104575306.obj
+       │   └── DEBY_LOD2_104575493.obj
+       ├── 04_pts
+       │   ├── DEBY_LOD2_104572462.npy
+       │   ├── DEBY_LOD2_104575306.npy
+       │   └── DEBY_LOD2_104575493.npy
+       ├── 05_complexes
+       │   ├── DEBY_LOD2_104572462.cc
+       │   ├── DEBY_LOD2_104575306.cc
+       │   └── DEBY_LOD2_104575493.cc
+       ├── testset.txt
+       └── trainset.txt
+   ```
+4. To train or evaluate PolyGNN using your dataset, run the following commands:
+   ```python
+   # start training
+   python train.py dataset=YOUR_DATASET_NAME
+   
+   # start evaluation
+   python test.py dataset=YOUR_DATASET_NAME
+   ```
+   For evaluation only, you can instantiate your dataset as a [`TestOnlyDataset`](https://github.com/chenzhaiyu/polygnn/blob/67addd77a6be1d100448e3bd7523babfa063d0dd/dataset.py#L276), as in [this line](https://github.com/chenzhaiyu/polygnn/blob/94ffc9e45f0721653038bd91f33f1d4eafeab7cb/test.py#L178).
 
 ## 👷 TODOs
 
