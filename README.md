@@ -3,9 +3,8 @@
 -----------
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://raw.githubusercontent.com/chenzhaiyu/polygnn/main/LICENSE)
 
-PolyGNN is an implementation of the paper [*PolyGNN: Polyhedron-based Graph Neural Network for 3D Building Reconstruction from Point Clouds*](https://arxiv.org/abs/2307.08636). 
-> [!NOTE]  
-> This repository is under development and may differ from the arXiv manuscript.
+PolyGNN is an implementation of the paper [*PolyGNN: Polyhedron-based Graph Neural Network for 3D Building Reconstruction from Point Clouds*](https://www.sciencedirect.com/science/article/pii/S0924271624003691). 
+PolyGNN learns a piecewise planar occupancy function, supported by polyhedral decomposition, for efficient and scalable 3D building reconstruction.
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/chenzhaiyu/polygnn/master/docs/architecture.png" width="680"/>
@@ -141,17 +140,22 @@ PolyGNN requires polyhedron-based graphs as input. To prepare this from your own
 
 - [x] Demo with mini data and pretrained weights
 - [x] Short tutorial for getting started
-- [ ] Host the entire dataset
+- [ ] Host the entire dataset (>200GB)
 
 ## 🎓 Citation
 
 If you use PolyGNN in a scientific work, please consider citing the paper:
 
 ```bibtex
-@article{chen2023polygnn,
-  title={PolyGNN: polyhedron-based graph neural network for 3D building reconstruction from point clouds},
-  author={Chen, Zhaiyu and Shi, Yilei and Nan, Liangliang and Xiong, Zhitong and Zhu, Xiao Xiang},
-  journal={arXiv preprint arXiv:2307.08636},
-  year={2023}
+@article{chen2024polygnn,
+title = {PolyGNN: Polyhedron-based graph neural network for 3D building reconstruction from point clouds},
+journal = {ISPRS Journal of Photogrammetry and Remote Sensing},
+volume = {218},
+pages = {693-706},
+year = {2024},
+issn = {0924-2716},
+doi = {https://doi.org/10.1016/j.isprsjprs.2024.09.031},
+url = {https://www.sciencedirect.com/science/article/pii/S0924271624003691},
+author = {Zhaiyu Chen and Yilei Shi and Liangliang Nan and Zhitong Xiong and Xiao Xiang Zhu},
 }
 ```
