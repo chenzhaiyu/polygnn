@@ -1,7 +1,9 @@
 # PolyGNN
 
 -----------
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://raw.githubusercontent.com/chenzhaiyu/polygnn/main/LICENSE)
+[![Paper: HTML](https://img.shields.io/badge/Paper-HTML-yellow)](https://www.sciencedirect.com/science/article/pii/S0924271624003691) 
+[![Paper: PDF](https://img.shields.io/badge/Paper-PDF-green)](https://www.sciencedirect.com/science/article/pii/S0924271624003691/pdfft?md5=3d0d8b3b72cdd3f4c809d714b1292137&pid=1-s2.0-S0924271624003691-main.pdf) 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://raw.githubusercontent.com/chenzhaiyu/polygnn/main/LICENSE)
 
 PolyGNN is an implementation of the paper [*PolyGNN: Polyhedron-based Graph Neural Network for 3D Building Reconstruction from Point Clouds*](https://www.sciencedirect.com/science/article/pii/S0924271624003691). 
 PolyGNN learns a piecewise planar occupancy function, supported by polyhedral decomposition, for efficient and scalable 3D building reconstruction.
