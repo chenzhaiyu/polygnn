@@ -108,7 +108,7 @@ PolyGNN requires polyhedron-based graphs as input. To prepare this from your own
    cell_complex.construct()
    cell_complex.save(complex_path)
    ```
-   Alternatively, you can modify [`CityDataset`](https://github.com/chenzhaiyu/polygnn/blob/67addd77a6be1d100448e3bd7523babfa063d0dd/dataset.py#L157) or [`TestOnlyDataset`](https://github.com/chenzhaiyu/polygnn/blob/67addd77a6be1d100448e3bd7523babfa063d0dd/dataset.py#L276) to accept inputs directly from [VertexGroup](https://abspy.readthedocs.io/en/latest/vertexgroup.html) or [reference mesh](https://abspy.readthedocs.io/en/latest/api.html#abspy.VertexGroupReference).
+   Alternatively, you can modify [`CityDataset`](https://github.com/chenzhaiyu/polygnn/blob/67addd77a6be1d100448e3bd7523babfa063d0dd/dataset.py#L157) or [`TestOnlyDataset`](https://github.com/chenzhaiyu/polygnn/blob/67addd77a6be1d100448e3bd7523babfa063d0dd/dataset.py#L276) to accept inputs directly from [VertexGroup](https://abspy.readthedocs.io/en/latest/vertexgroup.html) or [VertexGroupReference](https://abspy.readthedocs.io/en/latest/api.html#abspy.VertexGroupReference).
 3. Structure your dataset similarly to the provided mini dataset:
    ```bash
    YOUR_DATASET_NAME
@@ -142,7 +142,7 @@ PolyGNN requires polyhedron-based graphs as input. To prepare this from your own
 
 - [x] Demo with mini data and pretrained weights
 - [x] Short tutorial for getting started
-- [ ] Host the entire dataset (>200GB)
+- [ ] Host the entire dataset [https://github.com/chenzhaiyu/polygnn/issues/3#issuecomment-2512819371]
 
 ## 🎓 Citation
 
@@ -161,3 +161,5 @@ url = {https://www.sciencedirect.com/science/article/pii/S0924271624003691},
 author = {Zhaiyu Chen and Yilei Shi and Liangliang Nan and Zhitong Xiong and Xiao Xiang Zhu},
 }
 ```
+
+You might also want to check out [abspy](https://github.com/chenzhaiyu/abspy) for 3D adaptive binary space partitioning and [Points2Poly](https://github.com/chenzhaiyu/points2poly) for reconstruction with deep implicit fields.
