@@ -93,6 +93,9 @@ python test.py --cfg job
 ```
 Alternatively, review the configuration file: `conf/config.yaml`.
 
+### Full dataset
+
+The Munich dataset is available for download on [Zenodo](https://zenodo.org/records/14254264). Note that it requires 332 GB of storage when decompressed.
 
 ### Custom data
 
@@ -142,7 +145,7 @@ PolyGNN requires polyhedron-based graphs as input. To prepare this from your own
 
 - [x] Demo with mini data and pretrained weights
 - [x] Short tutorial for getting started
-- [ ] Host the entire dataset [https://github.com/chenzhaiyu/polygnn/issues/3#issuecomment-2512819371]
+- [x] Host the full dataset
 
 ## 🎓 Citation
 
