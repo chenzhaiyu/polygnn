@@ -41,10 +41,11 @@ class ConvONetDecoder(torch.nn.Module):
         padding (float): conventional padding parameter of ONet for unit cube, so [-0.5, 0.5] -> [-0.55, 0.55]
     """
 
-    def __init__(self, dim=3, c_dim=128, hidden_size=256, latent_dim=4096, n_blocks=5,
+    def __init__(self, dim=3, c_dim=128, hidden_size=256, latent_dim=4096, num_queries = 16 ,n_blocks=5,
                  leaky=False, sample_mode='bilinear', padding=0.1):
         super().__init__()
         self.c_dim = c_dim
+        self.num_queries = num_queries
         self.n_blocks = n_blocks
 
         if c_dim != 0:
@@ -57,9 +58,9 @@ class ConvONetDecoder(torch.nn.Module):
         self.blocks = torch.nn.ModuleList([
             ResnetBlockFC(hidden_size) for _ in range(n_blocks)
         ])
-        if latent_dim != hidden_size * 16:
-            # not recommended
-            self.fc_out = torch.nn.Linear(hidden_size * 16, latent_dim)
+        if latent_dim != hidden_size * num_queries:
+            # not recommended as breaks explicit per-query feature
+            self.fc_out = torch.nn.Linear(hidden_size * num_queries, latent_dim)
         else:
             self.fc_out = None
 
@@ -112,7 +113,7 @@ class ConvONetDecoder(torch.nn.Module):
 
         # aggregate to cell-wise features
         out = net.squeeze()
-        out = out.view(out.shape[0] // 16, -1)  # (num_cells, latent_b_dim * num_queries == 4096)
+        out = out.view(out.shape[0] // self.num_queries , -1)  # (num_cells, latent_b_dim * num_queries == 4096)
         if self.fc_out is not None:
             out = self.fc_out(out)
 
@@ -131,7 +132,7 @@ class Decoder(torch.nn.Module):
         if backbone.casefold() == 'MLP'.casefold():
             self.network = MLPDecoder(latent_dim=latent_dim, num_queries=num_queries)
         elif backbone.casefold() == 'ConvONet'.casefold():
-            self.network = ConvONetDecoder(latent_dim=latent_dim)
+            self.network = ConvONetDecoder(latent_dim=latent_dim, num_queries=num_queries)
         else:
             raise ValueError(f'Unexpected backbone: {backbone}')
 
