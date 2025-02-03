@@ -41,7 +41,7 @@ class ConvONetDecoder(torch.nn.Module):
         padding (float): conventional padding parameter of ONet for unit cube, so [-0.5, 0.5] -> [-0.55, 0.55]
     """
 
-    def __init__(self, dim=3, c_dim=128, hidden_size=256, latent_dim=4096, num_queries = 16 ,n_blocks=5,
+    def __init__(self, dim=3, c_dim=128, hidden_size=256, latent_dim=4096, num_queries=16 ,n_blocks=5,
                  leaky=False, sample_mode='bilinear', padding=0.1):
         super().__init__()
         self.c_dim = c_dim
