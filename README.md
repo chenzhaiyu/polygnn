@@ -72,7 +72,7 @@ Generate meshes from predictions:
 python reconstruct.py dataset=mini reconstruct.type=mesh
 ```
 
-Remap meshes to their original CRS:
+Remap meshes to their original CRS (meshes [here](https://drive.google.com/file/d/1hn11XMqyoPUnq-9WGfAwQq47uuUvcbi7/view?usp=drive_link) for CRS reference):
 ```python
 python remap.py dataset=mini
 ```
