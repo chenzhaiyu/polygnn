@@ -72,7 +72,7 @@ Generate meshes from predictions:
 python reconstruct.py dataset=mini reconstruct.type=mesh
 ```
 
-Remap meshes to their original CRS (meshes [here](https://drive.google.com/file/d/1hn11XMqyoPUnq-9WGfAwQq47uuUvcbi7/view?usp=drive_link) for CRS reference):
+Remap meshes to their original CRS:
 ```python
 python remap.py dataset=mini
 ```
@@ -95,7 +95,7 @@ Alternatively, review the configuration file: `conf/config.yaml`.
 
 ### Full dataset
 
-The Munich dataset is available for download on [Zenodo](https://zenodo.org/records/14254264). Note that it requires 332 GB of storage when decompressed.
+The Munich dataset is available for download on [Zenodo](https://zenodo.org/records/14254264). Note that it requires 332 GB of storage when decompressed. Meshes for CRS remapping can be downloaded [here](https://drive.google.com/file/d/1hn11XMqyoPUnq-9WGfAwQq47uuUvcbi7/view?usp=drive_link).
 
 ### Custom data
 
