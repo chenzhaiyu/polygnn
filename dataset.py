@@ -192,7 +192,7 @@ class CityDataset(Dataset):
         path_save = os.path.join(self.processed_dir, f'data_{kwargs["split"]}_{kwargs["index"]}.pt')
         if os.path.exists(path_save):
             return
-        logger.info(f'processing {Path(kwargs["cloud"]).stem}')
+        logger.debug(f'processing {Path(kwargs["cloud"]).stem}')
         try:
             data = PolyGraph(use_reference=True, num_queries=self.num_queries).data_loader(kwargs['cloud'],
                                                                                            kwargs['mesh'],
@@ -232,7 +232,7 @@ class CityDataset(Dataset):
         with multiprocessing.Pool(
                 processes=self.num_workers if self.num_workers else multiprocessing.cpu_count()) as pool:
             # call with multiprocessing
-            for _ in tqdm(pool.imap(self.thread, args), desc='Preparing dataset', total=len(args)):
+            for _ in tqdm(pool.imap_unordered(self.thread, args), desc='Preparing dataset', total=len(args)):
                 pass
 
     def len(self):
