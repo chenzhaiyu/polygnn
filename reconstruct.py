@@ -41,7 +41,7 @@ def reconstruct_from_numpy(args):
         adjacency_graph = AdjacencyGraph(cell_complex.graph, quiet=True)
         adjacency_graph.reachable = adjacency_graph.to_uids(indices_cells)
         adjacency_graph.non_reachable = np.setdiff1d(adjacency_graph.uid, adjacency_graph.reachable).tolist()
-        adjacency_graph.save_surface_obj(args[2], cells=cell_complex.cells, engine='rendering')
+        adjacency_graph.save_surface_obj(args[2], cells=cell_complex.cells)
 
     elif args[3] == 'cell':
         if len(indices_cells) > 0:

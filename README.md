@@ -41,7 +41,7 @@ conda install mamba -c conda-forge
 Install the required dependencies:
 ```
 mamba install pytorch torchvision sage=10.0 pytorch-cuda=11.7 pyg=2.3 pytorch-scatter pytorch-sparse pytorch-cluster torchmetrics rtree -c pyg -c pytorch -c nvidia -c conda-forge
-pip install abspy hydra-core hydra-colorlog omegaconf trimesh tqdm wandb plyfile
+pip install abspy==0.2.6 hydra-core hydra-colorlog omegaconf trimesh tqdm wandb plyfile
 ```
 
 ## 🚀 Usage
@@ -56,7 +56,7 @@ python download.py dataset=mini
 In case you encounter issues (e.g., Google Drive limits), manually download the data and weights [here](https://drive.google.com/drive/folders/1fAwvhGtOgS8f4IldE1J4v5s0438WM24b?usp=sharing), then extract them into `./checkpoints/mini` and `./data/mini`, respectively.
 The mini dataset contains 200 random instances (~0.07% of the full dataset).
 
-Train PolyGNN on the mini dataset:
+Train PolyGNN on the mini dataset (provided for your reference and is not intended for full-scale training):
 ```python
 python train.py dataset=mini
 ```
