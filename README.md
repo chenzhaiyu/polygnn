@@ -165,4 +165,5 @@ author = {Zhaiyu Chen and Yilei Shi and Liangliang Nan and Zhitong Xiong and Xia
 }
 ```
 
+The synthetic point clouds are simulated with [pyhelios](https://github.com/chenzhaiyu/pyhelios).
 You might also want to check out [abspy](https://github.com/chenzhaiyu/abspy) for 3D adaptive binary space partitioning and [Points2Poly](https://github.com/chenzhaiyu/points2poly) for reconstruction with deep implicit fields.
